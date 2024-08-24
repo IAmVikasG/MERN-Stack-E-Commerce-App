@@ -1,6 +1,10 @@
 const express = require('express');
 require("dotenv").config();
 const mongoose = require('mongoose');
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
 
 const app = express();
 
@@ -17,8 +21,13 @@ async function main()
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
+// middlewares
+app.use(morgan("dev"));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 // Routes
-app.use('/api/user', userRoutes);
+app.use('/api', userRoutes);
 
 const port = process.env.PORT || 8000;
 

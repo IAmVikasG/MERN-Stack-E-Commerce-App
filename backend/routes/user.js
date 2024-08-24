@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // Custom imports file
-const { index } = require('../controllers/user');
+const { signup } = require('../controllers/user');
 
-router.get('/', index);
+router.post('/signup', signup);
 
 module.exports = router;
