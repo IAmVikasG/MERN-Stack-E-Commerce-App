@@ -4,22 +4,21 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+// Custom imports file
+const userRoutes = require('./routes/user');
 
 // Database connection
 main().catch(err => console.log(err));
 
 async function main()
 {
-    await mongoose.connect('mongodb://127.0.0.1:27017/mern_ecommerce');
+    await mongoose.connect(process.env.MONGO_URI);
 
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
-
-app.get("/", (req, res) =>
-{
-    res.send("hello world");
-});
+// Routes
+app.use('/api/user', userRoutes);
 
 const port = process.env.PORT || 8000;
 
