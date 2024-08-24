@@ -1,9 +1,10 @@
 const express = require('express');
-require("dotenv").config();
+require('dotenv').config();
 const mongoose = require('mongoose');
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const expressValidator = require('express-validator');
 
 
 const app = express();
@@ -25,6 +26,7 @@ async function main()
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(expressValidator());
 
 // Routes
 app.use('/api', userRoutes);
