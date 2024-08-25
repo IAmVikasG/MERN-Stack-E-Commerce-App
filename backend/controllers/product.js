@@ -22,6 +22,30 @@ exports.create = (req, res) =>
         // Log the files object to check its structure
         console.log(files);
 
+        // check for all fields
+        const {
+            name,
+            description,
+            price,
+            category,
+            quantity,
+            shipping
+        } = fields;
+
+        if (
+            !name ||
+            !description ||
+            !price ||
+            !category ||
+            !quantity ||
+            !shipping
+        )
+        {
+            return res.status(400).json({
+                error: "All fields are required"
+            });
+        }
+
         let product = new Product(fields);
 
         if (files.photo)
@@ -35,6 +59,8 @@ exports.create = (req, res) =>
             }
 
             // Check the file size
+            // 1kb = 1000
+            // 1mb = 1000000
             if (files.photo.size > 1000000)
             {
                 return res.status(400).json({
