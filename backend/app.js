@@ -12,6 +12,7 @@ const app = express();
 // Custom imports file
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const categoryRoutes = require('./routes/category');
 
 // Database connection
 main().catch(err => console.log(err));
@@ -32,6 +33,7 @@ app.use(expressValidator());
 // Routes
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
 
 const port = process.env.PORT || 8000;
 
