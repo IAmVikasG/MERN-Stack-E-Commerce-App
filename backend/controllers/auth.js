@@ -1,9 +1,9 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // to generate signed token
-const expressJwt = require("express-jwt"); // for authorization check
+const { expressjwt: expressjwtRequest } = require("express-jwt"); // for authorization check
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
-exports.requireSignin = expressJwt({
+exports.requireSignin = expressjwtRequest({
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"], // added later
     userProperty: "auth",
