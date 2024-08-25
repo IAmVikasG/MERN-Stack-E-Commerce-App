@@ -3,9 +3,9 @@ const router = express.Router();
 
 // Custom imports file
 const { userById } = require('../controllers/user');
-const { requireSignin } = require('../controllers/auth');
+const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 
-router.get('/secret/:userId', requireSignin, (req, res, next) =>
+router.get('/secret/:userId', requireSignin, isAuth, (req, res, next) =>
 {
     res.json({
         user: req.profile
