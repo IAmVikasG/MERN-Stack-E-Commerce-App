@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
+import { signout, isAuthenticated } from "../API/auth";
 
 const isActive = (history, path) => {
     if (history.location.pathname === path) {
@@ -22,25 +23,46 @@ const Menu = ({ history }) => (
                 </Link>
             </li>
 
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/signin")}
-                    to="/signin"
-                >
-                    Signin
-                </Link>
-            </li>
+            {!isAuthenticated() && (
+                <>
+                    <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/signin")}
+                            to="/signin"
+                        >
+                            Signin
+                        </Link>
+                    </li>
 
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/signup")}
-                    to="/signup"
-                >
-                    Signup
-                </Link>
-            </li>
+                    <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/signup")}
+                            to="/signup"
+                        >
+                            Signup
+                        </Link>
+                    </li>
+                </>
+            )}
+
+            {isAuthenticated() && (
+                <li className="nav-item">
+                    <span
+                        className="nav-link"
+                        style={{ cursor: "pointer", color: "#ffffff" }}
+                        onClick={() =>
+                            signout(() =>
+                            {
+                                history.push("/");
+                            })
+                        }
+                    >
+                        Signout
+                    </span>
+                </li>
+            )}
         </ul>
     </div>
 );
