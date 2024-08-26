@@ -4,23 +4,34 @@ import Card from "./Card";
 import { getCategories } from "./apiCore";
 import Checkbox from "./Checkbox";
 
-const Shop = () => {
+const Shop = () =>
+{
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
 
-    const init = () => {
-        getCategories().then(data => {
-            if (data.error) {
+    const init = () =>
+    {
+        getCategories().then(data =>
+        {
+            if (data.error)
+            {
                 setError(data.error);
-            } else {
+            } else
+            {
                 setCategories(data);
             }
         });
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         init();
     }, []);
+
+    const handleFilters = (filters, filterBy) =>
+    {
+        console.log("SHOP", filters, filterBy);
+    };
 
     return (
         <Layout
@@ -32,7 +43,12 @@ const Shop = () => {
                 <div className="col-4">
                     <h4>Filter by categories</h4>
                     <ul>
-                        <Checkbox categories={categories} />
+                        <Checkbox
+                            categories={categories}
+                            handleFilters={filters =>
+                                handleFilters(filters, "category")
+                            }
+                        />
                     </ul>
                 </div>
 
