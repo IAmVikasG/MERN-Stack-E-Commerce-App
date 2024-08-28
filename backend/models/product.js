@@ -44,4 +44,18 @@ const productSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Create a virtual field 'id' that maps to '_id'
+productSchema.virtual('id').get(function ()
+{
+    return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialized in the output
+productSchema.set('toJSON', {
+    virtuals: true,
+});
+productSchema.set('toObject', {
+    virtuals: true,
+});
+
 module.exports = mongoose.model("Product", productSchema);
