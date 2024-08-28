@@ -4,10 +4,15 @@ import moment from "moment";
 import { useCart } from "react-use-cart";
 import ShowImage from "./ShowImage";
 
-const Card = ({ product, showViewProductButton = true, showAddToCartButton = true,
-    cartUpdate = false }) =>
+const Card = ({
+    product,
+    showViewProductButton = true,
+    showAddToCartButton = true,
+    cartUpdate = false,
+    showRemoveProductButton = false
+}) =>
 {
-    const { addItem, updateItemQuantity, getItem } = useCart();
+    const { addItem, updateItemQuantity, getItem, removeItem } = useCart();
     const [redirect, setRedirect] = useState(false);
     const [count, setCount] = useState(getItem(product.id)?.quantity);
 
@@ -47,6 +52,20 @@ const Card = ({ product, showViewProductButton = true, showAddToCartButton = tru
                     className="btn btn-outline-warning mt-2 mb-2"
                 >
                     Add to cart
+                </button>
+            )
+        );
+    };
+
+    const showRemoveButton = showRemoveProductButton =>
+    {
+        return (
+            showRemoveProductButton && (
+                <button
+                    onClick={() => removeItem(product.id)}
+                    className="btn btn-outline-danger mt-2 mb-2"
+                >
+                    Remove Product
                 </button>
             )
         );
@@ -117,6 +136,8 @@ const Card = ({ product, showViewProductButton = true, showAddToCartButton = tru
                 {showViewButton(showViewProductButton)}
 
                 {showAddToCart(showAddToCartButton)}
+
+                {showRemoveButton(showRemoveProductButton)}
 
                 {showCartUpdateOptions(cartUpdate)}
             </div>
