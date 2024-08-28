@@ -20,7 +20,11 @@ const Cart = () => {
                 <h2>Your cart has {`${itemsObj.length}`} items</h2>
                 <hr />
                 {itemsObj.map((product, i) => (
-                    <Card key={i} product={product} />
+                    <Card key={i}
+                        product={product}
+                        showAddToCartButton={false}
+                        cartUpdate={true}
+                    />
                 ))}
             </div>
         );
