@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "react-use-cart";
 import Layout from "./Layout";
-import { getBraintreeClientToken, processPayment } from "./apiCore";
+import { getBraintreeClientToken, processPayment, createOrder } from "./apiCore";
 import { isAuthenticated } from "../API/auth";
 import { Link } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
@@ -40,6 +40,10 @@ const Checkout = () =>
         getToken(userId, token);
     }, []);
 
+    const handleAddress = event =>
+    {
+        setData({ ...data, address: event.target.value });
+    };
 
     const getTotal = () => {
         return cartTotal;
@@ -84,9 +88,24 @@ const Checkout = () =>
                     {
                         // console.log(response
                         setData({ ...data, success: response.success });
-                        // empty cart
-                        emptyCart();
                         // create order
+                        const createOrderData = {
+                            products: items,
+                            transaction_id: response.transaction.id,
+                            amount: response.transaction.amount,
+                            address: data.address
+                        };
+
+                        createOrder(userId, token, createOrderData)
+                            .then(response =>
+                            {
+                                emptyCart();
+                            })
+                            .catch(error =>
+                            {
+                                console.log(error);
+                                setData({ loading: false });
+                            });
                     })
                     .catch(error => console.log(error));
             })
@@ -101,12 +120,21 @@ const Checkout = () =>
         <div onBlur={() => setData({ ...data, error: "" })}>
             {data.clientToken !== null && !isEmpty && items.length > 0 ? (
                 <div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Delivery address:</label>
+                        <textarea
+                            onChange={handleAddress}
+                            className="form-control"
+                            value={data.address}
+                            placeholder="Type your delivery address here..."
+                        />
+                    </div>
                     <DropIn
                         options={{
-                            authorization: data.clientToken,
-                            paypal: {
-                                flow: "vault"
-                            }
+                            authorization: data.clientToken
+                            // paypal: {
+                            //     flow: "vault"
+                            // }
                         }}
                         onInstance={instance => (data.instance = instance)}
                     />
